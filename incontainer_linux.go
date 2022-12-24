@@ -7,7 +7,7 @@ import (
 )
 
 func Detect() bool {
-	return hasContainerEnv() || isCgroupV2Container() || hasDockerCgroup() || pid1EnvHasContainer() || syscall.Getpid() == 1 || isOpenVZ() || isWSL()
+	return hasContainerEnv() || isCgroupV2Container() || hasDockerCgroup() || pid1EnvHasContainer() || syscall.Getpid() == 1 || isOpenVZ() || isWSL() || isKubernetes()
 }
 
 func hasContainerEnv() bool {
@@ -58,4 +58,8 @@ func isWSL() bool {
 		return false
 	}
 	return bytes.Contains(bs, []byte("Microsoft"))
+}
+
+func isKubernetes() bool {
+	return os.Getenv("KUBERNETES_SERVICE_HOST") != ""
 }
